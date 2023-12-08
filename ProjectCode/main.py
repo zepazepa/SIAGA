@@ -28,14 +28,17 @@ def siaga_model():
     # Perform one-hot encoding for the 'Detector' column and drop the first column
     fire_encoded = pd.get_dummies(fire, columns=columns_to_encode, prefix='Detector', drop_first=True)
     fire_encoded['Detector_ON'] = fire_encoded['Detector_ON'].astype(int)
-    print(fire_encoded)
+    #print(fire_encoded)
 
     parameters_encoded = fire_encoded[['Temperature', 'MQ139', 'Detector_ON','Humidity']].values
+    max_values = parameters_encoded.max(axis=0)
+    normalized_arr = parameters_encoded / max_values
+    #print(normalized_arr)
     # SIZE = len(fire)
     TRAINING = 10000
     VALID = 900 + TRAINING
 
-    train_param, valid_param, test_param = parameters_encoded[:TRAINING], parameters_encoded[TRAINING:VALID], parameters_encoded[VALID:]
+    train_param, valid_param, test_param = normalized_arr[:TRAINING], normalized_arr[TRAINING:VALID], normalized_arr[VALID:]
     train_label, valid_label, test_label = labels[:TRAINING], labels[TRAINING:VALID], labels[VALID:]
 
     #MAKE MODEL
@@ -107,4 +110,4 @@ def siaga_model():
 if __name__ == '__main__':
     # DO NOT CHANGE THIS CODE
     model = siaga_model()
-    # model.save("siaga_model.h5")
+    model.save("siaga_model.h5")
