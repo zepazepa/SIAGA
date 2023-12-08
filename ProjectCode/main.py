@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 from tensorflow import keras
-from sklearn.model_selection import train_test_split
+#from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 
 #MAKE CLASS CALLBACK
@@ -20,7 +20,7 @@ def siaga_model():
     #READ DATASET
     fire = pd.read_csv("./fire_dataset_random.csv")
 
-    selected_parameter = ['Temperature', 'MQ139', 'Detector']
+    selected_parameter = ['Temperature', 'MQ139', 'Detector','Humidity']
     parameter = np.array(fire[selected_parameter].values)
     labels = np.array(fire['Fire Alarm'])
 
@@ -33,7 +33,7 @@ def siaga_model():
 
     #MAKE MODEL
     model = tf.keras.models.Sequential([
-        keras.layers.Dense(units=512, input_shape=(3,), activation='relu'),
+        keras.layers.Dense(units=512, input_shape=(4,), activation='relu'),
         keras.layers.Dense(units=128, activation='relu'),
         keras.layers.Dense(units=3, activation='softmax')
     ])
@@ -55,6 +55,7 @@ def siaga_model():
         "Temperature":test_param[:, 0],
         "MQ139": test_param[:, 1],
         "Detector": test_param[:, 2],
+        "Humidity": test_param[:, 3],
         "Fire Alarm": test_label,
         "Hasil": hasil
     }
