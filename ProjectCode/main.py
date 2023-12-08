@@ -18,17 +18,22 @@ callbacks = myCallback()
 
 def siaga_model():
     #READ DATASET
-    fire = pd.read_csv("./fire_dataset_random.csv")
+    fire = pd.read_csv("./dataset_shuffled.csv")
 
-    selected_parameter = ['Temperature', 'MQ139', 'Detector','Humidity']
-    parameter = np.array(fire[selected_parameter].values)
-    labels = np.array(fire['Fire Alarm'])
+    selected_parameters = ['Temperature', 'MQ139', 'Detector-Code','Humidity']
+    parameters = fire[selected_parameters].values
+    labels = fire['Status'].values
 
+    columns_to_encode = ['Detector']
+    # Perform one-hot encoding for the 'Detector' column and drop the first column
+    #fire_encoded = pd.get_dummies(fire, columns=columns_to_encode, prefix='Detector', drop_first=True)
+    #parameters_encoded = fire_encoded[['Temperature', 'MQ139', 'Detector','Humidity']].values
+    #print(fire_encoded[:5])
     # SIZE = len(fire)
     TRAINING = 10000
     VALID = 900 + TRAINING
 
-    train_param, valid_param, test_param = parameter[:TRAINING], parameter[TRAINING:VALID], parameter[VALID:]
+    train_param, valid_param, test_param = parameters[:TRAINING], parameters[TRAINING:VALID], parameters[VALID:]
     train_label, valid_label, test_label = labels[:TRAINING], labels[TRAINING:VALID], labels[VALID:]
 
     #MAKE MODEL
