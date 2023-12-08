@@ -21,19 +21,21 @@ def siaga_model():
     fire = pd.read_csv("./dataset_shuffled.csv")
 
     selected_parameters = ['Temperature', 'MQ139', 'Detector-Code','Humidity']
-    parameters = fire[selected_parameters].values
+    #parameters = fire[selected_parameters].values
     labels = fire['Status'].values
 
     columns_to_encode = ['Detector']
     # Perform one-hot encoding for the 'Detector' column and drop the first column
-    #fire_encoded = pd.get_dummies(fire, columns=columns_to_encode, prefix='Detector', drop_first=True)
-    #parameters_encoded = fire_encoded[['Temperature', 'MQ139', 'Detector','Humidity']].values
-    #print(fire_encoded[:5])
+    fire_encoded = pd.get_dummies(fire, columns=columns_to_encode, prefix='Detector', drop_first=True)
+    fire_encoded['Detector_ON'] = fire_encoded['Detector_ON'].astype(int)
+    print(fire_encoded)
+
+    parameters_encoded = fire_encoded[['Temperature', 'MQ139', 'Detector_ON','Humidity']].values
     # SIZE = len(fire)
     TRAINING = 10000
     VALID = 900 + TRAINING
 
-    train_param, valid_param, test_param = parameters[:TRAINING], parameters[TRAINING:VALID], parameters[VALID:]
+    train_param, valid_param, test_param = parameters_encoded[:TRAINING], parameters_encoded[TRAINING:VALID], parameters_encoded[VALID:]
     train_label, valid_label, test_label = labels[:TRAINING], labels[TRAINING:VALID], labels[VALID:]
 
     #MAKE MODEL
@@ -65,7 +67,8 @@ def siaga_model():
         "Hasil": hasil
     }
     hasil_df = pd.DataFrame(hasil_df)
-    # pd.set_option('display.max_rows', None)
+    pd.set_option('display.max_rows', None)
+    pd.set_option('display.max_columns', None)
     print(hasil_df)
 
     for i in range(0,len(test_param)):
