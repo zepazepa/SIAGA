@@ -18,7 +18,7 @@ callbacks = myCallback()
 
 def siaga_model():
     #READ DATASET
-    fire = pd.read_csv("./dataset_shuffled.csv")
+    fire = pd.read_csv("./dataset_final/dataset_shuffled.csv")
 
     selected_parameters = ['Temperature', 'MQ139', 'Detector-Code','Humidity']
     #parameters = fire[selected_parameters].values
