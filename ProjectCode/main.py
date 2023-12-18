@@ -3,7 +3,6 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 from tensorflow import keras
-#from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 
 #MAKE CLASS CALLBACK
@@ -33,7 +32,7 @@ def siaga_model():
     parameters_encoded = fire_encoded[['Temperature', 'MQ139', 'Detector_ON','Humidity']].values
     max_values = parameters_encoded.max(axis=0)
     normalized_arr = parameters_encoded / max_values
-    #print(normalized_arr)
+        #print(normalized_arr)
     # SIZE = len(fire)
     TRAINING = 10000
     VALID = 900 + TRAINING
